@@ -741,8 +741,7 @@ Wire Load Model Mode: top
 ```
 Slack is 0.00, and I believe this module is the fastest module that I can get with this synthesis.
 Let's see the area and power report.
-
-Area Report:
+\n Area Report:
 ```
 ****************************************
 Report : area
