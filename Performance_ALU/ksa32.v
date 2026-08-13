@@ -153,7 +153,7 @@ module ksa32(in_a, in_b, in_cin, out_s, out_cout);
     wire w_pn_3_0, w_pn_3_1, w_pn_3_2, w_pn_3_3, w_pn_3_4, w_pn_3_5, w_pn_3_6, w_pn_3_7, w_pn_3_8, w_pn_3_9, w_pn_3_10, w_pn_3_11, w_pn_3_12, w_pn_3_13, w_pn_3_14, w_pn_3_15, w_pn_3_16, w_pn_3_17, w_pn_3_18, w_pn_3_19, w_pn_3_20, w_pn_3_21, w_pn_3_22, w_pn_3_23, w_pn_3_24, w_pn_3_25, w_pn_3_26, w_pn_3_27;
 
     merge U61(.in_ga(w_g0), .in_pa(w_p0), .in_gb(w_gn_2_2), .in_pb(w_pn_2_2), .out_gnew(w_gn_3_0), .out_pnew(w_pn_3_0)); //gp(4:0)
-    merge U62(.in_ga(w_gn_1_0), .in_pa(w_gn_1_0), .in_gb(w_gn_2_3), .in_pb(w_pn_2_3), .out_gnew(w_gn_3_1), .out_pnew(w_pn_3_1)); //gp(5:1)
+    merge U62(.in_ga(w_gn_1_0), .in_pa(w_pn_1_0), .in_gb(w_gn_2_3), .in_pb(w_pn_2_3), .out_gnew(w_gn_3_1), .out_pnew(w_pn_3_1)); //gp(5:1)
     merge U63(.in_ga(w_gn_2_0), .in_pa(w_pn_2_0), .in_gb(w_gn_2_4), .in_pb(w_pn_2_4), .out_gnew(w_gn_3_2), .out_pnew(w_pn_3_2)); //gp(6:2)
     merge U64(.in_ga(w_gn_2_1), .in_pa(w_pn_2_1), .in_gb(w_gn_2_5), .in_pb(w_pn_2_5), .out_gnew(w_gn_3_3), .out_pnew(w_pn_3_3)); //gp(7:3)
     merge U65(.in_ga(w_gn_2_2), .in_pa(w_pn_2_2), .in_gb(w_gn_2_6), .in_pb(w_pn_2_6), .out_gnew(w_gn_3_4), .out_pnew(w_pn_3_4)); //gp(8:4)
@@ -268,37 +268,37 @@ module ksa32(in_a, in_b, in_cin, out_s, out_cout);
     carry C32(.in_g(w_gn_5_15), .in_p(w_pn_5_15), .in_cin(in_cin), .out_cout(out_cout));
 
     // generate S
-    sum S0(.in_p(w_p0), .in_cin(in_cin), .out_s(out_s[0]));
-    sum S1(.in_p(w_p1), .in_cin(w_c1), .out_s(out_s[1]));
-    sum S2(.in_p(w_p2), .in_cin(w_c2), .out_s(out_s[2]));
-    sum S3(.in_p(w_p3), .in_cin(w_c3), .out_s(out_s[3]));
-    sum S4(.in_p(w_p4), .in_cin(w_c4), .out_s(out_s[4]));
-    sum S5(.in_p(w_p5), .in_cin(w_c5), .out_s(out_s[5]));
-    sum S6(.in_p(w_p6), .in_cin(w_c6), .out_s(out_s[6]));
-    sum S7(.in_p(w_p7), .in_cin(w_c7), .out_s(out_s[7]));
-    sum S8(.in_p(w_p8), .in_cin(w_c8), .out_s(out_s[8]));
-    sum S9(.in_p(w_p9), .in_cin(w_c9), .out_s(out_s[9]));
-    sum S10(.in_p(w_p10), .in_cin(w_c10), .out_s(out_s[10]));
-    sum S11(.in_p(w_p11), .in_cin(w_c11), .out_s(out_s[11]));
-    sum S12(.in_p(w_p12), .in_cin(w_c12), .out_s(out_s[12]));
-    sum S13(.in_p(w_p13), .in_cin(w_c13), .out_s(out_s[13]));
-    sum S14(.in_p(w_p14), .in_cin(w_c14), .out_s(out_s[14]));
-    sum S15(.in_p(w_p15), .in_cin(w_c15), .out_s(out_s[15]));
-    sum S16(.in_p(w_p16), .in_cin(w_c16), .out_s(out_s[16]));
-    sum S17(.in_p(w_p17), .in_cin(w_c17), .out_s(out_s[17]));
-    sum S18(.in_p(w_p18), .in_cin(w_c18), .out_s(out_s[18]));
-    sum S19(.in_p(w_p19), .in_cin(w_c19), .out_s(out_s[19]));
-    sum S20(.in_p(w_p20), .in_cin(w_c20), .out_s(out_s[20]));
-    sum S21(.in_p(w_p21), .in_cin(w_c21), .out_s(out_s[21]));
-    sum S22(.in_p(w_p22), .in_cin(w_c22), .out_s(out_s[22]));
-    sum S23(.in_p(w_p23), .in_cin(w_c23), .out_s(out_s[23]));
-    sum S24(.in_p(w_p24), .in_cin(w_c24), .out_s(out_s[24]));
-    sum S25(.in_p(w_p25), .in_cin(w_c25), .out_s(out_s[25]));
-    sum S26(.in_p(w_p26), .in_cin(w_c26), .out_s(out_s[26]));
-    sum S27(.in_p(w_p27), .in_cin(w_c27), .out_s(out_s[27]));
-    sum S28(.in_p(w_p28), .in_cin(w_c28), .out_s(out_s[28]));
-    sum S29(.in_p(w_p29), .in_cin(w_c29), .out_s(out_s[29]));
-    sum S30(.in_p(w_p30), .in_cin(w_c30), .out_s(out_s[30]));
-    sum S31(.in_p(w_p31), .in_cin(w_c31), .out_s(out_s[31]));
+    sum S0(.in_p(w_p0), .in_c(in_cin), .out_s(out_s[0]));
+    sum S1(.in_p(w_p1), .in_c(w_c1), .out_s(out_s[1]));
+    sum S2(.in_p(w_p2), .in_c(w_c2), .out_s(out_s[2]));
+    sum S3(.in_p(w_p3), .in_c(w_c3), .out_s(out_s[3]));
+    sum S4(.in_p(w_p4), .in_c(w_c4), .out_s(out_s[4]));
+    sum S5(.in_p(w_p5), .in_c(w_c5), .out_s(out_s[5]));
+    sum S6(.in_p(w_p6), .in_c(w_c6), .out_s(out_s[6]));
+    sum S7(.in_p(w_p7), .in_c(w_c7), .out_s(out_s[7]));
+    sum S8(.in_p(w_p8), .in_c(w_c8), .out_s(out_s[8]));
+    sum S9(.in_p(w_p9), .in_c(w_c9), .out_s(out_s[9]));
+    sum S10(.in_p(w_p10), .in_c(w_c10), .out_s(out_s[10]));
+    sum S11(.in_p(w_p11), .in_c(w_c11), .out_s(out_s[11]));
+    sum S12(.in_p(w_p12), .in_c(w_c12), .out_s(out_s[12]));
+    sum S13(.in_p(w_p13), .in_c(w_c13), .out_s(out_s[13]));
+    sum S14(.in_p(w_p14), .in_c(w_c14), .out_s(out_s[14]));
+    sum S15(.in_p(w_p15), .in_c(w_c15), .out_s(out_s[15]));
+    sum S16(.in_p(w_p16), .in_c(w_c16), .out_s(out_s[16]));
+    sum S17(.in_p(w_p17), .in_c(w_c17), .out_s(out_s[17]));
+    sum S18(.in_p(w_p18), .in_c(w_c18), .out_s(out_s[18]));
+    sum S19(.in_p(w_p19), .in_c(w_c19), .out_s(out_s[19]));
+    sum S20(.in_p(w_p20), .in_c(w_c20), .out_s(out_s[20]));
+    sum S21(.in_p(w_p21), .in_c(w_c21), .out_s(out_s[21]));
+    sum S22(.in_p(w_p22), .in_c(w_c22), .out_s(out_s[22]));
+    sum S23(.in_p(w_p23), .in_c(w_c23), .out_s(out_s[23]));
+    sum S24(.in_p(w_p24), .in_c(w_c24), .out_s(out_s[24]));
+    sum S25(.in_p(w_p25), .in_c(w_c25), .out_s(out_s[25]));
+    sum S26(.in_p(w_p26), .in_c(w_c26), .out_s(out_s[26]));
+    sum S27(.in_p(w_p27), .in_c(w_c27), .out_s(out_s[27]));
+    sum S28(.in_p(w_p28), .in_c(w_c28), .out_s(out_s[28]));
+    sum S29(.in_p(w_p29), .in_c(w_c29), .out_s(out_s[29]));
+    sum S30(.in_p(w_p30), .in_c(w_c30), .out_s(out_s[30]));
+    sum S31(.in_p(w_p31), .in_c(w_c31), .out_s(out_s[31]));
 
 endmodule
