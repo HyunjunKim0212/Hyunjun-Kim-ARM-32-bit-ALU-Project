@@ -457,7 +457,383 @@ set_ungroup [get_designs *] true
 # Execute Ultra Synthesis
 compile_ultra
 ```
+### Optimizing
+The ALU model is optimized by the timing constraints. 
 
+Summary Table:
+| Attempt | Target Max Delay | Data Arrival Time | Slack | Status | Note |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Attempt 1** | 1.50 ns | 1.20 ns | +0.30 ns | MET | Positive slack |
+| **Attempt 2** | 1.00 ns | 1.00 ns | 0.00 ns | MET | Zero slack and saved(`alu_top_syn.v`) as backup|
+| **Attempt 3** | 0.80 ns | 0.93 ns | -0.13 ns | **VIOLATED** | Timing Violation, negative slack |
+| **Final** | **0.93 ns** | **0.93 ns** | **0.00 ns** | **MET** | **(Critical Path 0.93ns)** and saved as (`alu_top_syn.v`) |
+
+---
+Detailed Reports:
+
+First attempt was set the max delay as 1.5.
+result is shown below
+```
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:19:55 2026
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: opcode[3] (input port)
+  Endpoint: alu_out[24]
+            (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu_top32          5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  opcode[3] (in)                           0.00       0.00 f
+  U969/ZN (OR2_X1)                         0.07       0.07 f
+  U1086/ZN (NOR3_X1)                       0.09       0.17 r
+  U1091/ZN (XNOR2_X1)                      0.08       0.24 r
+  U1125/ZN (XNOR2_X1)                      0.06       0.31 f
+  U1090/ZN (AND2_X1)                       0.06       0.36 f
+  U1096/ZN (AOI222_X1)                     0.07       0.43 r
+  U1095/ZN (INV_X1)                        0.04       0.47 f
+  U1011/ZN (AND2_X1)                       0.04       0.51 f
+  U1009/ZN (OAI21_X1)                      0.04       0.56 r
+  U995/ZN (AOI21_X1)                       0.03       0.59 f
+  U994/ZN (OAI21_X1)                       0.05       0.64 r
+  U983/ZN (OAI221_X1)                      0.04       0.68 f
+  U1013/ZN (AOI21_X1)                      0.07       0.76 r
+  U1012/ZN (INV_X1)                        0.03       0.79 f
+  U1029/ZN (AOI21_X1)                      0.04       0.83 r
+  U1028/ZN (OAI21_X1)                      0.04       0.87 f
+  U1180/ZN (AOI21_X1)                      0.05       0.92 r
+  U1179/ZN (OAI21_X1)                      0.03       0.95 f
+  U1178/ZN (AOI21_X1)                      0.05       1.00 r
+  U1184/ZN (OAI22_X1)                      0.04       1.04 f
+  U1183/ZN (INV_X1)                        0.03       1.07 r
+  U1281/ZN (OAI221_X1)                     0.04       1.11 f
+  U1280/ZN (AOI22_X1)                      0.05       1.16 r
+  U1404/ZN (OAI221_X1)                     0.04       1.20 f
+  alu_out[24] (out)                        0.00       1.20 f
+  data arrival time                                   1.20
+
+  max_delay                                1.50       1.50
+  output external delay                    0.00       1.50
+  data required time                                  1.50
+  -----------------------------------------------------------
+  data required time                                  1.50
+  data arrival time                                  -1.20
+  -----------------------------------------------------------
+  slack (MET)                                         0.30
+
+
+
+```
+Since the slack is positive, the targeted max delay was decreased to 1.0.
+the result of timing report is shown below
+
+```
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:23:35 2026
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: opcode[3] (input port)
+  Endpoint: alu_out[28]
+            (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu_top32          5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  opcode[3] (in)                           0.00       0.00 f
+  U1482/ZN (INV_X1)                        0.03       0.03 r
+  U1480/ZN (NAND4_X1)                      0.04       0.07 f
+  U1534/ZN (XNOR2_X1)                      0.06       0.13 r
+  U1535/ZN (XNOR2_X1)                      0.07       0.19 r
+  U1604/ZN (NOR2_X1)                       0.03       0.22 f
+  U1603/ZN (AOI21_X1)                      0.04       0.26 r
+  U1601/ZN (OAI22_X1)                      0.04       0.29 f
+  U1559/ZN (AOI21_X1)                      0.04       0.33 r
+  U1610/ZN (INV_X1)                        0.02       0.36 f
+  U1607/ZN (AOI21_X1)                      0.04       0.40 r
+  U1613/ZN (OAI21_X1)                      0.03       0.43 f
+  U1537/ZN (AOI21_X1)                      0.04       0.47 r
+  U1619/ZN (OAI21_X1)                      0.03       0.50 f
+  U1618/ZN (INV_X1)                        0.03       0.54 r
+  U1568/ZN (OAI22_X1)                      0.03       0.57 f
+  U1567/ZN (NAND2_X1)                      0.03       0.60 r
+  U1495/ZN (AOI211_X1)                     0.03       0.63 f
+  U1622/ZN (OAI211_X1)                     0.05       0.69 r
+  U1504/ZN (NAND2_X1)                      0.05       0.73 f
+  U1650/ZN (AOI21_X1)                      0.06       0.79 r
+  U1469/Z (MUX2_X1)                        0.07       0.87 f
+  U1712/ZN (AND2_X1)                       0.04       0.90 f
+  U1897/Z (MUX2_X2)                        0.06       0.97 f
+  U1975/ZN (OAI221_X1)                     0.03       1.00 r
+  alu_out[28] (out)                        0.00       1.00 r
+  data arrival time                                   1.00
+
+  max_delay                                1.00       1.00
+  output external delay                    0.00       1.00
+  data required time                                  1.00
+  -----------------------------------------------------------
+  data required time                                  1.00
+  data arrival time                                  -1.00
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+```
+The slack is 0.0. this netlist is saved as backup by "write -format verilog -hierarchy -output ./alu_top_syn.v" comand, and I wanted to push little bit more, thus I changed max delay as 0.8.  
+The result is shown below
+```
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:29:10 2026
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: opcode[3] (input port)
+  Endpoint: alu_out[31]
+            (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu_top32          5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  opcode[3] (in)                           0.00       0.00 f
+  U2133/ZN (INV_X1)                        0.03       0.03 r
+  U1953/ZN (AND4_X2)                       0.06       0.09 r
+  U2211/ZN (XNOR2_X1)                      0.06       0.15 r
+  U2288/ZN (OR2_X1)                        0.04       0.19 r
+  U2287/ZN (OAI21_X1)                      0.03       0.22 f
+  U2292/ZN (OAI21_X1)                      0.04       0.26 r
+  U2291/ZN (AOI21_X1)                      0.03       0.29 f
+  U2051/ZN (OAI21_X1)                      0.05       0.34 r
+  U2012/ZN (NAND2_X1)                      0.04       0.37 f
+  U2011/ZN (NAND2_X1)                      0.04       0.41 r
+  U2233/ZN (AOI21_X1)                      0.03       0.44 f
+  U2231/ZN (OAI21_X1)                      0.04       0.49 r
+  U2308/ZN (AOI21_X1)                      0.03       0.52 f
+  U2307/ZN (OAI21_X1)                      0.05       0.56 r
+  U2108/ZN (AOI21_X1)                      0.03       0.59 f
+  U2106/ZN (OAI21_X1)                      0.04       0.63 r
+  U2105/ZN (INV_X1)                        0.03       0.66 f
+  U2317/ZN (OAI21_X1)                      0.04       0.70 r
+  U2315/ZN (AOI21_X1)                      0.04       0.74 f
+  U1991/ZN (NAND2_X1)                      0.03       0.77 r
+  U1990/Z (MUX2_X1)                        0.07       0.85 f
+  U1987/ZN (NAND2_X1)                      0.03       0.87 r
+  U2003/ZN (NAND2_X1)                      0.03       0.90 f
+  U2035/ZN (NAND3_X1)                      0.02       0.92 r
+  alu_out[31] (out)                        0.00       0.93 r
+  data arrival time                                   0.93
+
+  max_delay                                0.80       0.80
+  output external delay                    0.00       0.80
+  data required time                                  0.80
+  -----------------------------------------------------------
+  data required time                                  0.80
+  data arrival time                                  -0.93
+  -----------------------------------------------------------
+  slack (VIOLATED)                                   -0.13
+
+
+```
+The delay is violated. I will try max delay as 0.93 for last try since arrival time was 0.93.
+The result is shown below.
+```
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:32:19 2026
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: opcode[2] (input port)
+  Endpoint: alu_out[31]
+            (output port)
+  Path Group: default
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  alu_top32          5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  input external delay                     0.00       0.00 f
+  opcode[2] (in)                           0.00       0.00 f
+  U2334/ZN (NOR2_X1)                       0.05       0.05 r
+  U2333/ZN (AND3_X1)                       0.06       0.11 r
+  U2347/Z (CLKBUF_X3)                      0.07       0.18 r
+  U2362/ZN (XNOR2_X1)                      0.08       0.26 r
+  U2212/Z (XOR2_X2)                        0.11       0.36 r
+  U2374/ZN (AND3_X2)                       0.08       0.44 r
+  U2423/ZN (INV_X1)                        0.03       0.47 f
+  U2533/ZN (OAI21_X1)                      0.05       0.52 r
+  U2532/ZN (AOI21_X1)                      0.03       0.55 f
+  U2432/ZN (OR2_X1)                        0.06       0.60 f
+  U2394/ZN (AOI211_X1)                     0.05       0.66 r
+  U2598/ZN (NOR2_X1)                       0.02       0.68 f
+  U2596/ZN (OAI21_X1)                      0.04       0.72 r
+  U2595/ZN (AOI21_X1)                      0.04       0.76 f
+  U2600/ZN (NAND2_X1)                      0.04       0.79 r
+  U2703/ZN (OAI221_X1)                     0.04       0.84 f
+  U2702/ZN (AOI22_X1)                      0.05       0.89 r
+  U2819/ZN (OAI221_X1)                     0.04       0.93 f
+  alu_out[31] (out)                        0.00       0.93 f
+  data arrival time                                   0.93
+
+  max_delay                                0.93       0.93
+  output external delay                    0.00       0.93
+  data required time                                  0.93
+  -----------------------------------------------------------
+  data required time                                  0.93
+  data arrival time                                  -0.93
+  -----------------------------------------------------------
+  slack (MET)                                         0.00
+
+
+```
+Slack is 0.00, and I believe this module is the fastest module that I can get with this synthesis.
+Let's see the area and power report.
+Area Report:
+```
+****************************************
+Report : area
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:34:37 2026
+****************************************
+
+Library(s) Used:
+
+    NangateOpenCellLibrary
+
+Number of ports:                          100
+Number of nets:                           600
+Number of cells:                          532
+Number of combinational cells:            532
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                        139
+Number of references:                      32
+
+Combinational area:                598.234000
+Buf/Inv area:                       84.056000
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                   598.234000
+Total area:                 undefined
+
+```
+
+Power Report:
+```
+****************************************
+Report : power
+        -analysis_effort low
+Design : alu_top32
+Version: T-2022.03-SP4
+Date   : Wed Aug 12 23:36:28 2026
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+alu_top32              5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+Attributes
+----------
+i - Including register clock pin internal power
+
+
+  Cell Internal Power  = 175.8731 uW   (49%)
+  Net Switching Power  = 180.3593 uW   (51%)
+                         ---------
+Total Dynamic Power    = 356.2324 uW  (100%)
+
+Cell Leakage Power     =  14.1554 uW
+
+Information: report_power power group summary does not include estimated clock tree power. (PWR-789)
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)  i
+register           0.0000            0.0000            0.0000            0.0000  (   0.00%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational    175.8731          180.3594        1.4155e+04          370.3879  ( 100.00%)
+--------------------------------------------------------------------------------------------------
+Total            175.8731 uW       180.3594 uW     1.4155e+04 nW       370.3879 uW
+```
 ## Place & Route (Synopsys Innovus)
 In Progress...
 
