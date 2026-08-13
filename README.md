@@ -371,6 +371,8 @@ endmodule
 ```
 ### ALU Top Module
 
+The top-level ALU module processes inputs in parallel through the 32-bit KSA and Logical Units, selecting the final output based on the 4-bit Opcode.
+
 ```
 module alu_top32 (
     input  [31:0] a,
@@ -420,6 +422,38 @@ module alu_top32 (
 
 endmodule
 ```
+## Synthesis (Synopsys Design Compiler)
+
+The Verilog source files were transferred to the school's Linux server environment via `scp` for logic synthesis. Using **Synopsys Design Compiler**, all sub-modules were compiled together in a single top-down flow to perform global timing and area optimization.
+
+- **Target Technology Library:** Nangate 45nm Open Cell Library (`nangate.db`)
+- **Synthesis Strategy:** Executed an integrated synthesis flow using a custom TCL script (`syn_alu.tcl`). The script loads all sub-modules simultaneously and applies `compile_ultra` with module ungrouping (flattening) to optimize critical paths and boundary logic across the entire ALU architecture.
+
+```
+# Set up the libraries
+set link_library {./nangate.db}
+set target_library {./nangate.db}
+
+# Read all RTL source files
+read_file -format verilog { \
+    ./ksa32.v \
+    ./logic_unit32.v \
+    ./alu_top32.v \
+}
+
+# Set Top Module
+current_design alu_top32
+link
+
+# Flatten hierarchy for boundary optimization (Method A)
+set_ungroup [get_designs *] true
+
+# Execute Ultra Synthesis
+compile_ultra
+```
+
+## Place & Route (Synopsys Innovus)
+
 
 ## Toolchain & Implementation Flow
 - **RTL:**  Verilog
