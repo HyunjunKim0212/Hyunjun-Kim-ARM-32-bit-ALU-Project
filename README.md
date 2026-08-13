@@ -47,6 +47,8 @@ Below is the control mapping implemented for the 32-bit ARM data-processing inst
 
 Kogge–Stone adder (KSA) is a high-speed, parallel-prefix form of a carry-lookahead adder used in digital computing and electronics to add binary numbers quickly. It computes carry signals simultaneously in \(O(\log_2 N)\) time, making it one of the fastest known adder designs, though it requires a larger physical chip area and complex wiring.
 
+![image](https://github.com/HyunjunKim0212/Hyunjun-Kim-ARM-32-bit-ALU-Project/blob/main/image/32%20bit%20KSA%20layer.png)
+
 ```
 // generation & propagation for the 32-bit Kogge-Stone Adder
 module gp(in_a, in_b, out_g, out_p);
