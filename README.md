@@ -472,7 +472,6 @@ Summary Table:
 Detailed Reports:
 
 First attempt was set the max delay as 1.5.
----
 result is shown below:
 ```
 ****************************************
@@ -542,7 +541,6 @@ Wire Load Model Mode: top
 
 ```
 Since the slack is positive, the targeted max delay was decreased to 1.0.
-
 the result of timing report is shown below:
 
 ```
@@ -612,7 +610,7 @@ Wire Load Model Mode: top
 
 ```
 The slack is 0.0. this netlist is saved as backup by "write -format verilog -hierarchy -output ./alu_top_syn.v" comand, and I wanted to push little bit more, thus I changed max delay as 0.8.  
-The result is shown below
+The result is shown below:
 ```
 ****************************************
 Report : timing
