@@ -47,9 +47,13 @@ Below is the control mapping implemented for the 32-bit ARM data-processing inst
 
 Kogge–Stone adder (KSA) is a high-speed, parallel-prefix form of a carry-lookahead adder used in digital computing and electronics to add binary numbers quickly. It computes carry signals simultaneously in \(O(\log_2 N)\) time, making it one of the fastest known adder designs, though it requires a larger physical chip area and complex wiring.
 
+The image right below is the schematic of a 32-bit KSA
+
 ![image](https://github.com/HyunjunKim0212/Hyunjun-Kim-ARM-32-bit-ALU-Project/blob/main/image/32%20bit%20KSA%20layer.png)
 
-```
+Verilog code of a 32-bit KSA is shown below
+
+```Verilog
 // generation & propagation for the 32-bit Kogge-Stone Adder
 module gp(in_a, in_b, out_g, out_p);
     input in_a, in_b;
@@ -360,7 +364,7 @@ endmodule
 
 The logic unit contains bitwise AND, OR, and XOR operators.
 
-```
+```Verilog
 module logic_unit32 (in_a, in_b, out_and, out_or, out_xor);
     input [31:0] in_a, in_b;
     output [31:0] out_and, out_or, out_xor;
@@ -375,7 +379,7 @@ endmodule
 
 The top-level ALU module processes inputs in parallel through the 32-bit KSA and Logical Units, selecting the final output based on the 4-bit Opcode.
 
-```
+```Verilog
 module alu_top32 (
     input  [31:0] a,
     input  [31:0] b,
@@ -431,7 +435,7 @@ The Verilog source files were transferred to the school's Linux server environme
 - **Target Technology Library:** Nangate 45nm Open Cell Library (`nangate.db`)
 - **Synthesis Strategy:** Executed an integrated synthesis flow using a custom TCL script (`syn_alu.tcl`). The script loads all sub-modules simultaneously and applies `compile_ultra` with module ungrouping (flattening) to optimize critical paths and boundary logic across the entire ALU architecture.
 
-```
+```TCL
 # Set up the libraries
 set link_library {./nangate.db}
 set target_library {./nangate.db}
